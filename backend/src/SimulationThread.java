@@ -44,11 +44,12 @@ public class SimulationThread extends Thread {
                 }
                 Thread.sleep(1000);
                 timeLeft -= System.currentTimeMillis() - timePass;
-                if (timeLeft < 0) {
+                if (timeLeft < 0 || sim.p.money < 0) {
                     running = false;
                     tcp.running = false;
                 }
             }
+            System.out.println("account is " + sim.p.money);
             System.out.println("end of simulation");
         } catch (InterruptedException e) {
             e.printStackTrace();
