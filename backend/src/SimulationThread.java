@@ -19,7 +19,7 @@ public class SimulationThread extends Thread {
             Simulation sim = new Simulation(r);
             TcpThread tcp = m.getSingleton("tcp");
 
-            long timeLeft = 10 * 1000;
+            long timeLeft = 10 * 60 * 1000;
 
             while (running) {
                 long timePass = System.currentTimeMillis();
