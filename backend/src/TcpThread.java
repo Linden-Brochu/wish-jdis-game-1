@@ -22,30 +22,44 @@ public class TcpThread extends Thread {
         try {
             ServerSocket socket = new ServerSocket(port);
             System.out.println("run on " + port);
-            Socket s = socket.accept();
-            t.start();
-
-            System.out.println("socket");
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            boolean hasConnectedOnce = false;
 
             while (running) {
-                String toSend;
-                synchronized (mutex) {
-                    toSend = send;
-                    send = null;
-                }
-                if (toSend != null) {
-                    writer.write(toSend + "\n");
+                try {
+                    System.out.println("waiting for connection");
+                    Socket s = socket.accept();
+
+                    if (!hasConnectedOnce) {
+                        t.start();
+                        hasConnectedOnce = true;
+                    }
+
+                    System.out.println("start of socket");
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+                    while (running) {
+                        String toSend;
+                        synchronized (mutex) {
+                            toSend = send;
+                            send = null;
+                        }
+                        if (toSend != null) {
+                            writer.write(toSend + "\n");
+                            writer.flush();
+
+                            command = reader.readLine();
+                        }
+                    }
+                    writer.write("\n");
                     writer.flush();
 
-                    command = reader.readLine();
+                    s.close();
+                } catch (IOException e) {
+                    System.out.println("end of socket");
                 }
             }
-            writer.write("\n");
-            writer.flush();
             System.out.println("end of tcp");
-            s.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
