@@ -1,11 +1,11 @@
-interface Player {
+export interface Player {
   posX: number
   posY: number
   payload: number
   money: number
 }
 
-interface Station {
+export interface Station {
   posX: number
   posY: number
   lastHarvested: number
