@@ -21,7 +21,7 @@ public class MoveAction implements Action {
         }
         if (Math.abs(y) <= speed) {
             p.posY = posY;
-        } else if (x < 0) {
+        } else if (y < 0) {
             p.posY -= speed;
         } else {
             p.posY += speed;
