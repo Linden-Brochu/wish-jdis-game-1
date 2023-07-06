@@ -2,7 +2,6 @@ import asyncio
 import json
 import bot
 import simulation
-import action
 
 PORT = 8081
 HOST = "localhost"

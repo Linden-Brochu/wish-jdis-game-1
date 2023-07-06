@@ -1,4 +1,6 @@
-public class MoveAction implements Action {
+import java.awt.*;
+
+public class MoveAction implements Action, Drawable {
     public int posX;
     public int posY;
 
@@ -27,5 +29,14 @@ public class MoveAction implements Action {
             p.posY += speed;
         }
         p.money -= 10 + p.payload;
+    }
+
+    @Override
+    public void draw(Graphics g, Player p) {
+        int halfWidth = Constant.WINDOW_WIDTH / 2;
+        int halfHeight = Constant.WINDOW_HEIGHT / 2;
+
+        g.setColor(new Color(0,0,255));
+        g.drawLine(p.posX + halfWidth, p.posY + halfHeight, posX + halfWidth, posY + halfHeight);
     }
 }

@@ -2,24 +2,25 @@ import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import netscape.javascript.JSObject;
 
+import javax.swing.*;
 import java.util.Random;
 
 public class SimulationThread extends Thread {
     public volatile boolean running = true;
 
-
-    public SimulationThread() {
-    }
-
     @Override
     public void run() {
         SingletonManager m = SingletonManager.getInstance();
-        try {
-            Random r = m.getSingleton("random");
-            Simulation sim = new Simulation(r);
-            TcpThread tcp = m.getSingleton("tcp");
 
-            long timeLeft = 10 * 60 * 1000;
+        Random r = m.getSingleton("random");
+        Simulation sim = new Simulation(r);
+        TcpThread tcp = m.getSingleton("tcp");
+
+        Window window = m.getSingleton("window");
+        window.setVisible(true);
+        window.setSimulation(sim);
+        try {
+            long timeLeft = Constant.SIMULATION_LENGTH;
 
             while (running) {
                 long timePass = System.currentTimeMillis();
@@ -42,7 +43,11 @@ public class SimulationThread extends Thread {
                 synchronized (tcp.mutex) {
                     tcp.send = sim.toJSON();
                 }
-                Thread.sleep(1000);
+
+                window.setTimeLeft(timeLeft);
+                window.repaint();
+
+                Thread.sleep(Constant.SLEEP_TIME);
                 timeLeft -= System.currentTimeMillis() - timePass;
                 if (timeLeft < 0 || sim.p.money < 0) {
                     running = false;
@@ -54,6 +59,6 @@ public class SimulationThread extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        window.dispose();
     }
 }
