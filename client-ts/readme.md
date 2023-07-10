@@ -32,7 +32,7 @@ import {HarvestAction} from './action.js';
 return new HarvestAction(id);
 ```
 
-#### sell_action
+#### SellAction
 
 Send this to sell the payload.
 Must be at (0,0).
@@ -43,7 +43,7 @@ import {SellAction} from './action.js';
 return new SellAction();
 ```
 
-#### end_action
+#### EndAction
 
 Send this to end the simulation.
 
