@@ -1,7 +1,7 @@
 # Client typescript
 
-Run `npm install` to install dependancies.
-Run `npm run serve` to start the clien
+- Run `npm install` to install dependancies.
+- Run `npm run serve` to start the client
 
 ## What is what?
 
